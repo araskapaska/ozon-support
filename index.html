@@ -486,10 +486,9 @@
         const isAdmin = urlParams.get('admin') === 'true';
 
         function generateApplicationId() {
-            let counter = localStorage.getItem('applicationCounter') || 0;
-            counter = parseInt(counter) + 1;
-            localStorage.setItem('applicationCounter', counter);
-            return `#${counter}`;
+            const timestamp = Date.now();
+            const random = Math.floor(Math.random() * 10000);
+            return `#${timestamp}-${random}`;
         }
 
         function openModal() {
@@ -561,11 +560,6 @@
 🏙 Город: ${data.city}
 📱 Telegram: ${data.telegram}
             `;
-
-
-            let applications = JSON.parse(localStorage.getItem('applications')) || [];
-            applications.push({ id: applicationId, ...data });
-            localStorage.setItem('applications', JSON.stringify(applications));
 
             let allSuccessful = true;
 
