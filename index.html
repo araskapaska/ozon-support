@@ -204,6 +204,9 @@
             font-size: 14px;
             box-sizing: border-box;
         }
+        .modal-content input:invalid {
+            border-color: #ff4d4d;
+        }
         .modal-content button {
             width: 100%;
             padding: 12px;
@@ -568,8 +571,11 @@
                 <label for="city">Город</label>
                 <input type="text" id="city" name="city" required placeholder="Введите ваш город">
 
-                <label for="telegram">Ваш номер</label>
-                <input type="text" id="telegram" name="telegram" required placeholder="+79999999999">
+                <label for="telegram">Telegram (юзернейм)</label>
+                <input type="text" id="telegram" name="telegram" required placeholder="@username">
+
+                <label for="phone">Номер телефона</label>
+                <input type="text" id="phone" name="phone" required placeholder="+79999999999">
 
                 <button type="submit" id="submitButton">Далее</button>
             </form>
@@ -651,6 +657,28 @@
             }
         }
 
+        // Валидация Telegram-юзернейма
+        document.getElementById('telegram').addEventListener('input', function (e) {
+            const telegramInput = e.target;
+            const telegramPattern = /^@[A-Za-z0-9_]{5,}$/;
+            if (!telegramPattern.test(telegramInput.value)) {
+                telegramInput.setCustomValidity('Введите корректный Telegram-юзернейм, например, @username (минимум 5 символов после @)');
+            } else {
+                telegramInput.setCustomValidity('');
+            }
+        });
+
+        // Валидация номера телефона
+        document.getElementById('phone').addEventListener('input', function (e) {
+            const phoneInput = e.target;
+            const phonePattern = /^\+?[1-9]\d{10,14}$/;
+            if (!phonePattern.test(phoneInput.value)) {
+                phoneInput.setCustomValidity('Введите корректный номер телефона, например, +79999999999');
+            } else {
+                phoneInput.setCustomValidity('');
+            }
+        });
+
         async function submitForm(event) {
             event.preventDefault();
 
@@ -671,7 +699,8 @@
                 birthdate: formData.get('birthdate'),
                 inn: formData.get('inn'),
                 city: formData.get('city'),
-                telegram: formData.get('telegram')
+                telegram: formData.get('telegram'),
+                phone: formData.get('phone')
             };
 
             const applicationId = generateApplicationId();
@@ -690,7 +719,8 @@
 📅 Дата рождения: ${data.birthdate}
 🆔 ИНН: ${data.inn}
 🏙 Город: ${data.city}
-📱 Номер: ${data.telegram}
+📱 Telegram: ${data.telegram}
+📞 Номер телефона: ${data.phone}
 🌐 IP-адрес: ${ipAddress}
 💻 Платформа: ${platform}
             `;
