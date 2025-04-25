@@ -2,9 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="robots" content="index, follow">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://cdnjs.cloudflare.com; img-src 'self' data:;">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OZON Работа</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
@@ -19,36 +17,36 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            padding: min(2vw, 10px);
+            padding: 10px;
             box-sizing: border-box;
         }
         .header-section {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: min(2vw, 10px);
-            margin-bottom: min(3vw, 15px);
+            padding: 0 10px;
+            margin-bottom: 15px;
         }
         .header {
-            font-size: min(5vw, 20px);
+            font-size: 20px;
             font-weight: bold;
             transition: color 0.5s ease;
         }
         .theme-toggle {
             display: flex;
-            gap: min(2vw, 8px);
+            gap: 8px;
         }
         .theme-toggle button {
             border: none;
-            width: min(9vw, 36px);
-            height: min(9vw, 36px);
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: background-color 0.5s ease, color 0.5s ease;
-            font-size: min(4.5vw, 18px);
+            font-size: 18px;
         }
         .theme-toggle .light-btn {
             background-color: #E6F0FA;
@@ -63,45 +61,45 @@
         }
         .main-banner {
             display: flex;
-            border-radius: min(6vw, 30px);
+            border-radius: 30px;
             overflow: hidden;
+            height: 300px;
             transition: background-color 0.5s ease, color 0.5s ease;
-            margin: 0 min(-2vw, -10px);
+            margin: 0 -10px;
             flex: 0 0 auto;
         }
         .banner-text {
-            padding: min(4vw, 20px);
+            padding: 20px;
             flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            border-radius: min(6vw, 30px);
-            margin: min(1vw, 5px) 0 min(1vw, 5px) min(1vw, 5px);
+            border-radius: 30px;
+            margin: 5px 0 5px 5px;
             transition: background-color 0.5s ease;
         }
         .banner-text h2 {
-            font-size: min(8vw, 32px);
-            margin: 0 0 min(3vw, 15px);
+            font-size: 32px;
+            margin: 0 0 15px;
             line-height: 1.2;
             transition: color 0.5s ease;
         }
         .banner-text p {
-            font-size: min(4.5vw, 18px);
-            margin: 0 0 min(3vw, 15px);
+            font-size: 18px;
+            margin: 0 0 15px;
             transition: color 0.5s ease;
         }
-        .banner-text a {
+        .banner-text button {
             background-color: white;
             color: #005BFF;
             border: none;
-            padding: min(2.5vw, 10px) min(5vw, 20px);
-            font-size: min(4vw, 16px);
+            padding: 10px 20px;
+            font-size: 16px;
             font-weight: bold;
-            border-radius: min(6vw, 30px);
+            border-radius: 30px;
             cursor: pointer;
-            text-decoration: none;
             transition: background-color 0.5s ease, color 0.5s ease;
         }
         .banner-image {
@@ -110,24 +108,23 @@
             justify-content: center;
             align-items: center;
             transition: background-color 0.5s ease;
-            margin: min(1vw, 5px) min(1vw, 5px) min(1vw, 5px) 0;
+            margin: 5px 5px 5px 0;
         }
         .banner-image img {
             max-width: 100%;
             height: auto;
-            max-height: min(60vw, 300px);
         }
         .features {
             display: flex;
             justify-content: space-between;
-            margin-top: min(3vw, 15px);
-            gap: min(3vw, 15px);
-            padding: 0 min(2vw, 10px);
+            margin-top: 15px;
+            gap: 15px;
+            padding: 0 10px;
             flex: 1;
         }
         .feature {
-            border-radius: min(6vw, 30px);
-            padding: min(4vw, 20px);
+            border-radius: 30px;
+            padding: 20px;
             flex: 1;
             display: flex;
             flex-direction: column;
@@ -137,33 +134,19 @@
             transition: background-color 0.5s ease, color 0.5s ease;
         }
         .feature img {
-            width: min(7.5vw, 30px);
-            height: min(7.5vw, 30px);
-            margin-bottom: min(2vw, 8px);
+            width: 30px;
+            height: 30px;
+            margin-bottom: 8px;
         }
         .feature h3 {
-            font-size: min(4vw, 16px);
-            margin: min(2vw, 8px) 0;
+            font-size: 16px;
+            margin: 8px 0;
             transition: color 0.5s ease;
         }
         .feature p {
-            font-size: min(3vw, 12px);
+            font-size: 12px;
             margin: 0;
             transition: color 0.5s ease;
-        }
-        footer {
-            text-align: center;
-            padding: min(4vw, 20px);
-            font-size: min(3.5vw, 14px);
-            color: #666;
-            transition: color 0.5s ease;
-        }
-        footer a {
-            color: #005BFF;
-            text-decoration: none;
-        }
-        footer a:hover {
-            text-decoration: underline;
         }
         body.light {
             background-color: #B3D4FF;
@@ -195,12 +178,6 @@
         .light .feature p {
             color: #666;
         }
-        .light footer {
-            color: #333;
-        }
-        .light footer a {
-            color: #003BB5;
-        }
         body.dark {
             background-color: #1E2A44;
             color: #E6E6E6;
@@ -219,7 +196,7 @@
         .dark .banner-text p {
             color: #E6E6E6;
         }
-        .dark .banner-text a {
+        .dark .banner-text button {
             background-color: #3B5998;
             color: #E6E6E6;
         }
@@ -235,16 +212,10 @@
         .dark .feature p {
             color: #B0C4DE;
         }
-        .dark footer {
-            color: #B0C4DE;
-        }
-        .dark footer a {
-            color: #99C7FF;
-        }
         .transition-circle {
             position: fixed;
             background: radial-gradient(circle, rgba(0, 91, 255, 0.8) 0%, transparent 70%);
-            border-radius: min(6vw, 30px);
+            border-radius: 30px;
             pointer-events: none;
             transform: scale(0);
             transition: transform 0.8s ease-out;
@@ -252,102 +223,71 @@
         .transition-circle.active {
             transform: scale(5);
         }
+
+        /* Адаптация под мобильные устройства */
         @media (max-width: 768px) {
             .container {
-                padding: min(2vw, 8px);
+                padding: 5px;
             }
             .header-section {
-                padding: min(2vw, 8px);
-                margin-bottom: min(3vw, 12px);
+                padding: 0 5px;
+                margin-bottom: 10px;
             }
             .header {
-                font-size: min(6vw, 18px);
+                font-size: 18px;
             }
             .theme-toggle button {
-                width: min(10vw, 30px);
-                height: min(10vw, 30px);
-                font-size: min(5vw, 16px);
+                width: 30px;
+                height: 30px;
+                font-size: 16px;
             }
             .main-banner {
                 flex-direction: column;
                 height: auto;
-                margin: 0 min(-2vw, -8px);
+                margin: 0 -5px;
             }
             .banner-text {
-                padding: min(4vw, 15px);
-                margin: min(1.5vw, 5px);
-                border-radius: min(6vw, 20px);
+                padding: 15px;
+                margin: 5px;
+                border-radius: 20px;
             }
             .banner-text h2 {
-                font-size: min(8vw, 24px);
-                margin-bottom: min(3vw, 10px);
+                font-size: 24px;
+                margin-bottom: 10px;
             }
             .banner-text p {
-                font-size: min(5vw, 16px);
-                margin-bottom: min(3vw, 10px);
+                font-size: 16px;
+                margin-bottom: 10px;
             }
-            .banner-text a {
-                padding: min(2.5vw, 8px) min(5vw, 16px);
-                font-size: min(4.5vw, 14px);
+            .banner-text button {
+                padding: 8px 16px;
+                font-size: 14px;
             }
             .banner-image {
-                margin: min(1.5vw, 5px);
-                padding: min(2.5vw, 10px);
+                margin: 5px;
+                padding: 10px;
             }
             .banner-image img {
-                max-height: min(40vw, 150px);
+                max-height: 150px;
             }
             .features {
                 flex-direction: column;
-                gap: min(3vw, 10px);
-                padding: 0 min(2vw, 8px);
+                gap: 10px;
+                padding: 0 5px;
             }
             .feature {
-                padding: min(4vw, 15px);
-                border-radius: min(6vw, 20px);
+                padding: 15px;
+                border-radius: 20px;
             }
             .feature img {
-                width: min(8vw, 25px);
-                height: min(8vw, 25px);
+                width: 25px;
+                height: 25px;
             }
             .feature h3 {
-                font-size: min(4.5vw, 14px);
+                font-size: 14px;
             }
             .feature p {
-                font-size: min(3.5vw, 12px);
-            }
-            footer {
-                padding: min(4vw, 15px);
-                font-size: min(4vw, 12px);
-            }
-        }
-        @media (max-width: 400px) {
-            .header {
-                font-size: min(7vw, 16px);
-            }
-            .theme-toggle button {
-                width: min(12vw, 28px);
-                height: min(12vw, 28px);
-                font-size: min(6vw, 14px);
-            }
-            .banner-text h2 {
-                font-size: min(9vw, 20px);
-            }
-            .banner-text p {
-                font-size: min(6vw, 14px);
-            }
-            .banner-text a {
-                font-size: min(5vw, 12px);
-                padding: min(3vw, 6px) min(6vw, 12px);
-            }
-            .feature h3 {
-                font-size: min(5vw, 12px);
-            }
-            .feature p {
-                font-size: min(4vw, 10px);
-            }
-            footer {
-                font-size: min(4.5vw, 10px);
+                font-size: 12px;
             }
         }
     </style>
@@ -366,56 +306,57 @@
         <div class="main-banner">
             <div class="banner-text">
                 <h2>Работа в OZON</h2>
-                <p>Зарплата от 80 000 ₽ в месяц при полной занятости</p>
-                <a href="https://t.me/ozon_aplications_tgbot" target="_blank">Перейти в бота</a>
+                <p>От 80 000 до 100 000 ₽ в месяц</p>
+                <button onclick="redirectToBot()">Стать работником</button>
             </div>
             <div class="banner-image">
-                <img src="hands.webp" alt="Работа в OZON">
+                <img src="hands.webp">
             </div>
         </div>
         <div class="features">
             <div class="feature">
-                <img src="money.png" alt="Доход">
+                <img src="money.png">
                 <h3>Стабильный доход</h3>
-                <p>Получайте оплату сразу после выполнения работы</p>
+                <p>Выполняйте работу и получайте деньги сразу после ее завершения</p>
             </div>
             <div class="feature">
-                <img src="gift.png" alt="Бонусы">
+                <img src="gift.png">
                 <h3>Дополнительный доход</h3>
-                <p>Бонусы до 50 000 ₽ за привлечение новых работников</p>
+                <p>Получайте бонусы за заказы: до 50 000 ₽ за привлечение нового работника</p>
             </div>
             <div class="feature">
-                <img src="clock.png" alt="Расписание">
+                <img src="clock.png">
                 <h3>Гибкое расписание</h3>
-                <p>Работайте несколько часов в неделю по вашему графику</p>
+                <p>Можно выполнять работу несколько часов в неделю</p>
             </div>
         </div>
-        <footer>
-            <p>© 2025 OZON Работа. <a href="/privacy.html">Политика конфиденциальности</a> | <a href="/terms.html">Условия использования</a> | Контакты: <a href="mailto:support@ozon.work">support@ozon.work</a></p>
-        </footer>
     </div>
 
     <script>
+        function redirectToBot() {
+            window.location.href = 'https://t.me/ozon_aplications_tgbot';
+        }
+
         function toggleTheme(theme, event) {
             const circle = document.createElement('div');
             circle.classList.add('transition-circle');
-
+            
             const x = event.clientX;
             const y = event.clientY;
             circle.style.left = `${x}px`;
             circle.style.top = `${y}px`;
-
+            
             const maxDimension = Math.max(window.innerWidth, window.innerHeight);
             circle.style.width = `${maxDimension}px`;
             circle.style.height = `${maxDimension}px`;
             circle.style.transform = 'translate(-50%, -50%) scale(0)';
-
+            
             document.body.appendChild(circle);
-
+            
             setTimeout(() => {
                 circle.classList.add('active');
             }, 10);
-
+            
             setTimeout(() => {
                 document.body.className = theme;
                 circle.remove();
