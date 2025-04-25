@@ -2,13 +2,392 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="0;url=https://t.me/ozon_aplications_tgbot">
-    <title>OZON поиск работы</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="robots" content="index, follow">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://cdnjs.cloudflare.com; img-src 'self' data:;">
+    <title>OZON Работа</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+        .container {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        .header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 10px;
+            margin-bottom: 15px;
+        }
+        .header {
+            font-size: 20px;
+            font-weight: bold;
+            transition: color 0.5s ease;
+        }
+        .theme-toggle {
+            display: flex;
+            gap: 8px;
+        }
+        .theme-toggle button {
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.5s ease, color 0.5s ease;
+            font-size: 18px;
+        }
+        .theme-toggle .light-btn {
+            background-color: #E6F0FA;
+            color: #1A2A44;
+        }
+        .theme-toggle .dark-btn {
+            background-color: #2A4066;
+            color: #66B0FF;
+        }
+        .theme-toggle button:hover {
+            opacity: 0.8;
+        }
+        .main-banner {
+            display: flex;
+            border-radius: 30px;
+            overflow: hidden;
+            height: 300px;
+            transition: background-color 0.5s ease, color 0.5s ease;
+            margin: 0 -10px;
+            flex: 0 0 auto;
+        }
+        .banner-text {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border-radius: 30px;
+            margin: 5px 0 5px 5px;
+            transition: background-color 0.5s ease;
+        }
+        .banner-text h2 {
+            font-size: 32px;
+            margin: 0 0 15px;
+            line-height: 1.2;
+            transition: color 0.5s ease;
+        }
+        .banner-text p {
+            font-size: 18px;
+            margin: 0 0 15px;
+            transition: color 0.5s ease;
+        }
+        .banner-text a {
+            background-color: white;
+            color: #005BFF;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+        .banner-image {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background-color 0.5s ease;
+            margin: 5px 5px 5px 0;
+        }
+        .banner-image img {
+            max-width: 100%;
+            height: auto;
+        }
+        .features {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            gap: 15px;
+            padding: 0 10px;
+            flex: 1;
+        }
+        .feature {
+            border-radius: 30px;
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+        .feature img {
+            width: 30px;
+            height: 30px;
+            margin-bottom: 8px;
+        }
+        .feature h3 {
+            font-size: 16px;
+            margin: 8px 0;
+            transition: color 0.5s ease;
+        }
+        .feature p {
+            font-size: 12px;
+            margin: 0;
+            transition: color 0.5s ease;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+            color: #666;
+            transition: color 0.5s ease;
+        }
+        footer a {
+            color: #005BFF;
+            text-decoration: none;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+        body.light {
+            background-color: #B3D4FF;
+            color: #333;
+        }
+        .light .header {
+            color: #005BFF;
+        }
+        .light .main-banner {
+            background-color: #007AFF;
+            color: white;
+        }
+        .light .banner-text {
+            background-color: rgba(0, 91, 255, 0.1);
+        }
+        .light .banner-text h2,
+        .light .banner-text p {
+            color: white;
+        }
+        .light .banner-image {
+            background-color: #007AFF;
+        }
+        .light .feature {
+            background-color: #E6F0FA;
+        }
+        .light .feature h3 {
+            color: #005BFF;
+        }
+        .light .feature p {
+            color: #666;
+        }
+        .light footer {
+            color: #333;
+        }
+        .light footer a {
+            color: #003BB5;
+        }
+        body.dark {
+            background-color: #1E2A44;
+            color: #E6E6E6;
+        }
+        .dark .header {
+            color: #66B0FF;
+        }
+        .dark .main-banner {
+            background-color: #2A4066;
+            color: #E6E6E6;
+        }
+        .dark .banner-text {
+            background-color: rgba(42, 64, 102, 0.3);
+        }
+        .dark .banner-text h2,
+        .dark .banner-text p {
+            color: #E6E6E6;
+        }
+        .dark .banner-text a {
+            background-color: #3B5998;
+            color: #E6E6E6;
+        }
+        .dark .banner-image {
+            background-color: #2A4066;
+        }
+        .dark .feature {
+            background-color: #2A4066;
+        }
+        .dark .feature h3 {
+            color: #66B0FF;
+        }
+        .dark .feature p {
+            color: #B0C4DE;
+        }
+        .dark footer {
+            color: #B0C4DE;
+        }
+        .dark footer a {
+            color: #99C7FF;
+        }
+        .transition-circle {
+            position: fixed;
+            background: radial-gradient(circle, rgba(0, 91, 255, 0.8) 0%, transparent 70%);
+            border-radius: 30px;
+            pointer-events: none;
+            transform: scale(0);
+            transition: transform 0.8s ease-out;
+        }
+        .transition-circle.active {
+            transform: scale(5);
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 5px;
+            }
+            .header-section {
+                padding: 0 5px;
+                margin-bottom: 10px;
+            }
+            .header {
+                font-size: 18px;
+            }
+            .theme-toggle button {
+                width: 30px;
+                height: 30px;
+                font-size: 16px;
+            }
+            .main-banner {
+                flex-direction: column;
+                height: auto;
+                margin: 0 -5px;
+            }
+            .banner-text {
+                padding: 15px;
+                margin: 5px;
+                border-radius: 20px;
+            }
+            .banner-text h2 {
+                font-size: 24px;
+                margin-bottom: 10px;
+            }
+            .banner-text p {
+                font-size: 16px;
+                margin-bottom: 10px;
+            }
+            .banner-text a {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+            .banner-image {
+                margin: 5px;
+                padding: 10px;
+            }
+            .banner-image img {
+                max-height: 150px;
+            }
+            .features {
+                flex-direction: column;
+                gap: 10px;
+                padding: 0 5px;
+            }
+            .feature {
+                padding: 15px;
+                border-radius: 20px;
+            }
+            .feature img {
+                width: 25px;
+                height: 25px;
+            }
+            .feature h3 {
+                font-size: 14px;
+            }
+            .feature p {
+                font-size: 12px;
+            }
+        }
+    </style>
 </head>
-<body>
-    <p>Перенаправление в Telegram...</p>
+<body class="light">
+    <div class="container">
+        <div class="header-section">
+            <div class="header">
+                OZON Поддержка
+            </div>
+            <div class="theme-toggle">
+                <button class="light-btn" onclick="toggleTheme('light', event)"><i class="fas fa-sun"></i></button>
+                <button class="dark-btn" onclick="toggleTheme('dark', event)"><i class="fas fa-moon"></i></button>
+            </div>
+        </div>
+        <div class="main-banner">
+            <div class="banner-text">
+                <h2>Работа в OZON</h2>
+                <p>Зарплата от 80 000 ₽ в месяц при полной занятости</p>
+                <a href="https://t.me/ozon_aplications_tgbot" target="_blank">Перейти в бота</a>
+            </div>
+            <div class="banner-image">
+                <img src="hands.webp" alt="Работа в OZON">
+            </div>
+        </div>
+        <div class="features">
+            <div class="feature">
+                <img src="money.png" alt="Доход">
+                <h3>Стабильный доход</h3>
+                <p>Получайте оплату сразу после выполнения работы</p>
+            </div>
+            <div class="feature">
+                <img src="gift.png" alt="Бонусы">
+                <h3>Дополнительный доход</h3>
+                <p>Бонусы до 50 000 ₽ за привлечение новых работников</p>
+            </div>
+            <div class="feature">
+                <img src="clock.png" alt="Расписание">
+                <h3>Гибкое расписание</h3>
+                <p>Работайте несколько часов в неделю по вашему графику</p>
+            </div>
+        </div>
+        <footer>
+            <p>© 2025 OZON Работа. <a href="/privacy.html">Политика конфиденциальности</a> | <a href="/terms.html">Условия использования</a> | Контакты: <a href="mailto:support@ozon.work">support@ozon.work</a></p>
+        </footer>
+    </div>
+
     <script>
-        window.location.href = "https://t.me/ozon_aplications_tgbot";
+        function toggleTheme(theme, event) {
+            const circle = document.createElement('div');
+            circle.classList.add('transition-circle');
+
+            const x = event.clientX;
+            const y = event.clientY;
+            circle.style.left = `${x}px`;
+            circle.style.top = `${y}px`;
+
+            const maxDimension = Math.max(window.innerWidth, window.innerHeight);
+            circle.style.width = `${maxDimension}px`;
+            circle.style.height = `${maxDimension}px`;
+            circle.style.transform = 'translate(-50%, -50%) scale(0)';
+
+            document.body.appendChild(circle);
+
+            setTimeout(() => {
+                circle.classList.add('active');
+            }, 10);
+
+            setTimeout(() => {
+                document.body.className = theme;
+                circle.remove();
+            }, 800);
+        }
     </script>
 </body>
 </html>
