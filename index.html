@@ -587,7 +587,7 @@
                 <label for="telegram">Ваш Telegram-юзернейм</label>
                 <input type="text" id="telegram" name="telegram" required placeholder="Введите @username">
 
-                <button type="submit" id="submitButton" onclick="submitForm(event)" ontouchstart="submitForm(event)">Отправить</button>
+                <button type="submit" id="submitButton">Отправить</button>
             </form>
         </div>
     </div>
@@ -603,6 +603,12 @@
     <script>
         const urlParams = new URLSearchParams(window.location.search);
         const isAdmin = urlParams.get('admin') === 'true';
+        const shouldClear = urlParams.get('clear') === 'true';
+
+        if (shouldClear) {
+            localStorage.removeItem('hasSubmitted');
+            alert('Заявки очищены. Пользователи могут отправлять заявки заново.');
+        }
 
         function generateApplicationId() {
             const timestamp = Date.now();
@@ -625,7 +631,10 @@
 
         async function getIpAddress() {
             try {
-                const response = await fetch('https://api.ipify.org?format=json');
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 5000);
+                const response = await fetch('https://api.ipify.org?format=json', { signal: controller.signal });
+                clearTimeout(timeoutId);
                 const data = await response.json();
                 return data.ip;
             } catch (error) {
@@ -645,24 +654,28 @@
 
         function openModal() {
             const hasSubmitted = localStorage.getItem('hasSubmitted');
-            document.getElementById('applicationModal').style.display = 'flex';
+            const modal = document.getElementById('applicationModal');
+            const submitButton = document.getElementById('submitButton');
+            modal.style.display = 'flex';
             if (hasSubmitted === 'true' && !isAdmin) {
-                document.getElementById('submitButton').disabled = true;
+                submitButton.disabled = true;
             } else {
-                document.getElementById('submitButton').disabled = false;
+                submitButton.disabled = false;
             }
         }
 
         function closeModal() {
-            document.getElementById('applicationModal').style.display = 'none';
-            document.getElementById('applicationForm').reset();
+            const modal = document.getElementById('applicationModal');
+            const form = document.getElementById('applicationForm');
+            modal.style.display = 'none';
+            form.reset();
         }
 
         function showNotification() {
-            document.getElementById('notificationModal').style.display = 'flex';
+            const modal = document.getElementById('notificationModal');
             const telegramLink = document.getElementById('telegramLink');
             const doneButton = document.getElementById('doneButton');
-
+            modal.style.display = 'flex';
             telegramLink.addEventListener('click', () => {
                 doneButton.classList.add('active');
             });
@@ -673,8 +686,9 @@
 
         function closeNotification() {
             const doneButton = document.getElementById('doneButton');
+            const modal = document.getElementById('notificationModal');
             if (doneButton.classList.contains('active')) {
-                document.getElementById('notificationModal').style.display = 'none';
+                modal.style.display = 'none';
             }
         }
 
@@ -682,12 +696,13 @@
             event.preventDefault();
 
             const hasSubmitted = localStorage.getItem('hasSubmitted');
+            const submitButton = document.getElementById('submitButton');
+
             if (hasSubmitted === 'true' && !isAdmin) {
                 alert('Вы уже отправили заявку. Повторная отправка невозможна.');
                 return;
             }
 
-            const submitButton = document.getElementById('submitButton');
             submitButton.disabled = true;
 
             const form = document.getElementById('applicationForm');
@@ -730,6 +745,8 @@
 
             for (const adminChatId of adminChatIds) {
                 try {
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 5000);
                     const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
                         method: 'POST',
                         headers: {
@@ -739,9 +756,10 @@
                             chat_id: adminChatId,
                             text: message,
                             parse_mode: 'HTML'
-                        })
+                        }),
+                        signal: controller.signal
                     });
-
+                    clearTimeout(timeoutId);
                     const result = await response.json();
                     if (!result.ok) {
                         allSuccessful = false;
@@ -761,6 +779,8 @@
                 alert('Произошла ошибка при отправке заявки. Попробуйте снова.');
                 submitButton.disabled = false;
             }
+
+            startBotListener();
         }
 
         function toggleTheme(theme, event) {
@@ -788,6 +808,60 @@
                 circle.remove();
             }, 800);
         }
+
+        function startBotListener() {
+            const botToken = '7673113370:AAH2hS9rKjs6MPTgQofo0RbKbSUsMrDwcR8';
+            const adminChatIds = ['6817476091', '7409970440', '2079893058'];
+            let lastUpdateId = 0;
+
+            async function checkUpdates() {
+                try {
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 5000);
+                    const response = await fetch(`https://api.telegram.org/bot${botToken}/getUpdates?offset=${lastUpdateId + 1}`, { signal: controller.signal });
+                    clearTimeout(timeoutId);
+                    const data = await response.json();
+                    if (data.ok && data.result.length > 0) {
+                        for (const update of data.result) {
+                            lastUpdateId = update.update_id;
+                            const chatId = update.message.chat.id.toString();
+                            const text = update.message.text;
+
+                            if (adminChatIds.includes(chatId) && text === '/clear') {
+                                const siteUrl = window.location.href.split('?')[0] + '?clear=true';
+                                const message = `
+Очистка заявок:
+Перейдите по ссылке, чтобы сбросить все заявки:
+<a href="${siteUrl}">Очистить заявки</a>
+                                `;
+                                for (const adminChatId of adminChatIds) {
+                                    const controller = new AbortController();
+                                    const timeoutId = setTimeout(() => controller.abort(), 5000);
+                                    await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json'
+                                        },
+                                        body: JSON.stringify({
+                                            chat_id: adminChatId,
+                                            text: message,
+                                            parse_mode: 'HTML'
+                                        }),
+                                        signal: controller.signal
+                                    });
+                                    clearTimeout(timeoutId);
+                                }
+                            }
+                        }
+                    }
+                } catch (error) {}
+                setTimeout(checkUpdates, 5000);
+            }
+
+            checkUpdates();
+        }
+
+        startBotListener();
     </script>
 </body>
 </html>
