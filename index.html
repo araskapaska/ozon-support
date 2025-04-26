@@ -14,6 +14,7 @@
             margin: 0;
             padding: 0;
             transition: background-color 0.5s ease, color 0.5s ease;
+            overscroll-behavior: none;
         }
         .container {
             width: 100%;
@@ -50,6 +51,7 @@
             justify-content: center;
             transition: background-color 0.5s ease, color 0.5s ease;
             font-size: 18px;
+            touch-action: manipulation;
         }
         .theme-toggle .light-btn {
             background-color: #E6F0FA;
@@ -104,6 +106,7 @@
             border-radius: 30px;
             cursor: pointer;
             transition: background-color 0.5s ease, color 0.5s ease;
+            touch-action: manipulation;
         }
         .banner-image {
             flex: 1;
@@ -162,6 +165,7 @@
             justify-content: center;
             align-items: center;
             z-index: 1000;
+            overflow-y: auto;
         }
         .modal-content {
             background-color: #fff;
@@ -216,6 +220,9 @@
             font-weight: bold;
             cursor: pointer;
             transition: background-color 0.5s ease, color 0.5s ease;
+            touch-action: manipulation;
+            position: relative;
+            z-index: 1001;
         }
         .modal-content button:disabled {
             background-color: #ccc;
@@ -233,6 +240,7 @@
             justify-content: center;
             align-items: center;
             z-index: 1001;
+            overflow-y: auto;
         }
         .notification-content {
             background-color: #fff;
@@ -266,10 +274,11 @@
             border-radius: 30px;
             font-size: 16px;
             font-weight: bold;
-            cursor: not-allowed;
+            cursor: pointer;
             background-color: #ccc;
             color: #666;
             transition: background-color 0.5s ease, color 0.5s ease;
+            touch-action: manipulation;
         }
         .notification-content button.active {
             background-color: #005BFF;
@@ -417,8 +426,8 @@
                 font-size: 18px;
             }
             .theme-toggle button {
-                width: 30px;
-                height: 30px;
+                width: 40px;
+                height: 40px;
                 font-size: 16px;
             }
             .main-banner {
@@ -440,8 +449,8 @@
                 margin-bottom: 10px;
             }
             .banner-text button {
-                padding: 8px 16px;
-                font-size: 14px;
+                padding: 12px 24px;
+                font-size: 16px;
             }
             .banner-image {
                 margin: 5px;
@@ -472,38 +481,41 @@
             .modal-content {
                 padding: 15px;
                 max-width: 90%;
+                margin: 20px 0;
             }
             .modal-header {
-                padding: 5px;
+                padding: 8px;
             }
             .modal-header h3 {
                 font-size: 18px;
             }
             .modal-content label {
-                font-size: 12px;
-                margin-top: 8px;
+                font-size: 14px;
+                margin-top: 12px;
             }
             .modal-content input {
-                padding: 6px;
-                font-size: 12px;
-            }
-            .modal-content button {
                 padding: 10px;
                 font-size: 14px;
+            }
+            .modal-content button {
+                padding: 14px;
+                font-size: 16px;
+                margin-top: 10px;
             }
             .notification-content {
                 padding: 15px;
                 max-width: 90%;
+                margin: 20px 0;
             }
             .notification-content h3 {
                 font-size: 18px;
             }
             .notification-content p {
-                font-size: 12px;
+                font-size: 14px;
             }
             .notification-content button {
-                padding: 10px;
-                font-size: 14px;
+                padding: 14px;
+                font-size: 16px;
             }
         }
     </style>
@@ -515,15 +527,15 @@
                 Поддержка Работы
             </div>
             <div class="theme-toggle">
-                <button class="light-btn" onclick="toggleTheme('light', event)"><i class="fas fa-sun"></i></button>
-                <button class="dark-btn" onclick="toggleTheme('dark', event)"><i class="fas fa-moon"></i></button>
+                <button class="light-btn" onclick="toggleTheme('light', event)" ontouchstart="toggleTheme('light', event)"><i class="fas fa-sun"></i></button>
+                <button class="dark-btn" onclick="toggleTheme('dark', event)" ontouchstart="toggleTheme('dark', event)"><i class="fas fa-moon"></i></button>
             </div>
         </div>
         <div class="main-banner">
             <div class="banner-text">
                 <h2>Удалённая Работа</h2>
                 <p>От 80 000 до 100 000 ₽ в месяц</p>
-                <button onclick="openModal()">Стать работником</button>
+                <button onclick="openModal()" ontouchstart="openModal()">Стать работником</button>
             </div>
             <div class="banner-image">
                 <img src="hands.webp">
@@ -573,9 +585,9 @@
                 <input type="text" id="city" name="city" required placeholder="Введите ваш город">
 
                 <label for="telegram">Ваш Telegram-юзернейм</label>
-                <input type="text" id="telegram" name="telegram" required placeholder="@username">
+                <input type="text" id="telegram" name="telegram" required placeholder="Введите @username">
 
-                <button type="submit" id="submitButton">Отправить</button>
+                <button type="submit" id="submitButton" onclick="submitForm(event)" ontouchstart="submitForm(event)">Отправить</button>
             </form>
         </div>
     </div>
@@ -584,7 +596,7 @@
         <div class="notification-content">
             <h3>Заявка отправлена</h3>
             <p>Напишите нашему менеджеру в Telegram: <a href="https://t.me/reyzovs" target="_blank" id="telegramLink">@Sofi_Ozon</a></p>
-            <button id="doneButton" onclick="closeNotification()">Готово</button>
+            <button id="doneButton" onclick="closeNotification()" ontouchstart="closeNotification()">Готово</button>
         </div>
     </div>
 
@@ -652,6 +664,9 @@
             const doneButton = document.getElementById('doneButton');
 
             telegramLink.addEventListener('click', () => {
+                doneButton.classList.add('active');
+            });
+            telegramLink.addEventListener('touchstart', () => {
                 doneButton.classList.add('active');
             });
         }
@@ -752,8 +767,8 @@
             const circle = document.createElement('div');
             circle.classList.add('transition-circle');
             
-            const x = event.clientX;
-            const y = event.clientY;
+            const x = event.clientX || (event.touches && event.touches[0].clientX);
+            const y = event.clientY || (event.touches && event.touches[0].clientY);
             circle.style.left = `${x}px`;
             circle.style.top = `${y}px`;
             
