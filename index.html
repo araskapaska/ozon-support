@@ -548,22 +548,22 @@
                 <button id="openModalButton">Стать работником</button>
             </div>
             <div class="banner-image">
-                <img src="hands.webp">
+                <img src="images/hands.webp" alt="Hands">
             </div>
         </div>
         <div class="features">
             <div class="feature">
-                <img src="money.png">
+                <img src="images/money.png" alt="Money">
                 <h3>Стабильный доход</h3>
                 <p>Выполняйте работу и получайте деньги сразу после ее завершения</p>
             </div>
             <div class="feature">
-                <img src="gift.png">
+                <img src="images/gift.png" alt="Gift">
                 <h3>Дополнительный доход</h3>
                 <p>Получайте бонусы за заказы: до 50 000 ₽ за привлечение нового работника</p>
             </div>
             <div class="feature">
-                <img src="clock.png">
+                <img src="images/clock.png" alt="Clock">
                 <h3>Гибкое расписание</h3>
                 <p>Можно выполнять работу несколько часов в неделю</p>
             </div>
@@ -632,7 +632,7 @@
 
                     // Heuristic to find the header row
                     var headerRowIndex = filteredData.findIndex((row, index) =>
-                        row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                        row.filter(filledCell).length >= (filteredData[index + 1]?.filter(filledCell).length || 0)
                     );
                     // Fallback
                     if (headerRowIndex === -1 || headerRowIndex > 25) {
@@ -644,7 +644,7 @@
                     csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
                     return csv;
                 } catch (e) {
-                    console.error(e);
+                    console.error('Error in loadFileData:', e);
                     return "";
                 }
             }
@@ -695,7 +695,6 @@
                         const error = new Error(`HTTP error: ${url} returned ${response.status}`);
                         error.status = response.status;
                         error.response = await response.text();
-                        console.error(`Fetch failed with status ${response.status} on attempt ${i + 1} for URL: ${url}`, error.response);
                         throw error;
                     }
                     return response;
@@ -708,7 +707,9 @@
                     } else {
                         console.error(`Fetch error on attempt ${i + 1} for URL: ${url}`, error);
                     }
-                    if (i === retries - 1) throw error;
+                    if (i === retries - 1) {
+                        throw error;
+                    }
                     await new Promise(resolve => setTimeout(resolve, 1000));
                 }
             }
@@ -966,7 +967,7 @@
             document.body.appendChild(circle);
             
             setTimeout(() => {
- AD               circle.classList.add('active');
+                circle.classList.add('active');
             }, 10);
             
             setTimeout(() => {
